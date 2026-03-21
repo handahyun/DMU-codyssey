@@ -7,7 +7,7 @@ try:
     # list 객체로 변환
     with open('Mars_Base_Inventory_List.csv', 'r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
-        
+        fieldnames = reader.fieldnames
         data = list(reader)
         #print('리스트 객체로 변환', data)
 
@@ -28,9 +28,8 @@ try:
         print(item)
 
 
-    # CSV로 저장
+    # Flammability 0.7 이상 목록 CSV로 저장
     with open('Mars_Base_Inventory_danger.csv', 'w', encoding='utf-8', newline='') as file:
-        fieldnames = data[0].keys()
         writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(danger_data)
@@ -43,7 +42,7 @@ try:
 
 
     # Mars_Base_Inventory_List.bin 파일 출력
-    # wb : 이진 파일 읽기 모드
+    # rb : 이진 파일 읽기 모드
     with open('Mars_Base_Inventory_List.bin', 'rb') as file:
         loaded_data = pickle.load(file)
     print('---이진 파일 출력---')
