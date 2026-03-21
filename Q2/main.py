@@ -21,6 +21,12 @@ try:
     sorted_data = sorted(data, key=lambda x: float(x['Flammability']), reverse=True)
 
 
+# list comprehension 문법
+# danger_data = []
+# for item in sorted_data: 
+#     if float(item['Flammability']) >= 0.7:
+#        danger_data.append(item)
+
     # Flammability 0.7 이상 출력
     danger_data = [item for item in sorted_data if float(item['Flammability']) >= 0.7]
     print('---0.7 이상 출력---')
