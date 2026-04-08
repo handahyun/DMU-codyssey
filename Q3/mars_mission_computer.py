@@ -24,8 +24,6 @@ class DummySensor:
         # env_values에 사전 객체({}) 추가
         # private 변수로 캡슐화
         self._env_values = {}
-        # 로깅 초기 설정
-        self._setup_logging() 
 
 
     def _setup_logging(self):
@@ -64,17 +62,22 @@ class DummySensor:
 
 
     def get_env(self):
+        # 로깅 중복 설정 방지
+        if not logging.getLogger().handlers:
+            self._setup_logging()
         # 로그 기록
         self._log_env()
         # _env_values 복사본 반환하여 외부에서 수정 방지
         return self._env_values.copy()
 
 
-# DummySensor 클래스 인스턴스화
-ds = DummySensor()
+# Q3를 직접 실행할 때만 동작
+if __name__ == "__main__":
+    # DummySensor 클래스 인스턴스화
+    ds = DummySensor()
 
-# set_env 메소드 호출 - 랜덤값 채우기
-ds.set_env()
+    # set_env 메소드 호출 - 랜덤값 채우기
+    ds.set_env()
 
-# get_env 메소드 호출 - 채워진 객체들 리턴받기
-print(ds.get_env())
+    # get_env 메소드 호출 - 채워진 객체들 리턴받기
+    print(ds.get_env())

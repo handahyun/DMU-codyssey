@@ -71,8 +71,11 @@ class MissionComputer:
         except KeyboardInterrupt:
             print('System stopped....')
 
-# MissionComputer를 RunComputer라는 이름으로 인스턴스화
-RunComputer = MissionComputer()
 
-# get_sensor_data 메서드 호출
-RunComputer.get_sensor_data() 
+# Q4를 직접 실행할 때만 동작
+if __name__ == "__main__":
+    # MissionComputer를 RunComputer라는 이름으로 인스턴스화
+    RunComputer = MissionComputer()
+
+    # get_sensor_data 메서드 호출
+    RunComputer.get_sensor_data() 
