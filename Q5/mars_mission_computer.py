@@ -5,7 +5,7 @@ import sys
 import os
 
 sys.path.append('..')
-# Q4의 MissionComputer 클래스를 BaseMissionComputer 이름으로 상속
+# Q4의 MissionComputer 클래스를 BaseMissionComputer 이름으로 import
 from Q4.mars_mission_computer import MissionComputer as BaseMissionComputer
 
 
