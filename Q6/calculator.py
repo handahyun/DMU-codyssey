@@ -13,15 +13,16 @@ from PyQt6.QtGui import QFont
 
 class Calculator(QWidget):
     def __init__(self):
-        # 부모 클래스(QWidget)의 __init__을 호출해 Qt 초기화 수행
+        # 부모 클래스(QWidget)의 __init__ 호출
         super().__init__()
         self.setWindowTitle("계산기")
         # 창 크기 조절 고정
         self.setFixedSize(320, 520)
         self.setStyleSheet("background-color: #1c1c1e;")
 
-        # 문자열을 누적 저장 변수
+        # 문자열 누적 저장 변수
         self.current_input = ""
+        self.just_calculated = False
 
         # 위젯을 수직으로 쌓는 레이아웃
         main_layout = QVBoxLayout()
@@ -83,8 +84,6 @@ class Calculator(QWidget):
             btn_color, hover_color, text_color = colors[btn_type]
 
             if text == "0":
-                # addWidget(widget, 행, 열, 행span, 열span) → 열span=2로 두 칸 차지
-                # text-align: left + padding-left로 텍스트를 왼쪽에 치우쳐 표시한다
                 btn.setFixedHeight(72)
                 btn.setStyleSheet(
                     f"""
@@ -106,7 +105,6 @@ class Calculator(QWidget):
                 # 1행 2열 차지
                 grid.addWidget(btn, row, col, 1, 2)
             else:
-                # 정사각형 나머지 버튼
                 btn.setFixedSize(72, 72)
                 btn.setStyleSheet(
                     f"""
@@ -160,7 +158,21 @@ class Calculator(QWidget):
 
         elif text == "=":
             if self.current_input:
-                self.current_input += " ="
+                # 디스플레이용 기호를 연산자로 교체
+                expr = self.current_input
+                expr = expr.replace("÷", "/")
+                expr = expr.replace("×", "*")
+                expr = expr.replace("−", "-")
+
+                try:
+                    result = eval(expr)
+                    # 정수로 떨어지면 소수점 제거
+                    if result == int(result):
+                        result = int(result)
+                    self.current_input = str(result)
+                    self.just_calculated = True
+                except:
+                    self.current_input = "오류"
                 self.display.setText(self.current_input)
 
         elif text == ".":
@@ -172,8 +184,11 @@ class Calculator(QWidget):
                 self.display.setText(self.current_input if self.current_input else "0.")
 
         else:
-            # 현재 입력이 0이면 교체
-            if self.current_input == "0":
+            # 계산 직후면 새로운 입력 시작
+            if self.just_calculated:
+                self.current_input = text
+                self.just_calculated = False
+            elif self.current_input == "0":
                 self.current_input = text
             else:
                 self.current_input += text
